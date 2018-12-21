@@ -1,3 +1,3 @@
 Kerry
 =====
-   an application for work on android.
+   small applications for Kerry.
