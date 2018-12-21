@@ -1,6 +1,6 @@
 
 GCC:=g++
-CFLAGS:= -g -O2 -Wall -std=c++11
+CFLAGS:= -g -O2 -Wall 
 
 SOURCES := $(wildcard *.c *.cpp *.cc)
 TARGETS  := $(patsubst %.c,  %, $(SOURCES) )
@@ -24,8 +24,15 @@ define build_bin
 endef
 	
 %: %.cpp
-	$(build_bin)
+	@$(BUILD_ECHO)
+	g++ $< -o $@ $(CFLAGS) -std=c++11
+	@echo "\n---- Compiled $@ ----\n"
 
+	
+%: %.c
+	@$(BUILD_ECHO)
+	gcc  $< -o $@ $(CFLAGS)
+	@echo "\n---- Compiled $@ ----\n"
 
 .PHONY: clean
 clean:
