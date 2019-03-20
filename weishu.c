@@ -4,17 +4,19 @@
 
 int weishu(int aa)
 {
-	int tmp = aa;
 	int ws = 0;
+	
+	// minus number has - , so add 1.
 	if (aa < 0)
-		ws = 1;
-	while(1)
+		return weishu(-aa) + 1;
+	
+	do
 	{
-		if (tmp == 0)
+		if (!aa)
 			break;
-		tmp /= 10;
+		aa /= 10;
 		ws++;
-	}
+	} while(1);
 	return ws;
 }
 
