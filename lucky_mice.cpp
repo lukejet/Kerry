@@ -8,12 +8,21 @@
 
 int v = 0;
 
+inline int isAlive(std::vector<unsigned int>& a, long n)
+{
+	return a[n/NS]&(1<<(n%NS));
+}
+inline void Kill(std::vector<unsigned int>& a, long n)
+{
+	a[n/NS] &= ~(1<<(n%NS));
+}
+
 int fooN(long n, int m)
 {
 	if (m<1)
 		return 0;
 	if (m== 1)
-		return n-1;
+		return n;
 	if (n<1)
 		return 0;
 	if (n== 1)
@@ -24,9 +33,9 @@ int fooN(long n, int m)
 	lm>0 ? ln++ : 0 ;
 	std::vector<unsigned int> aa(ln);  // sizeof int == 4
 	long i=0, kills=0;
-	for(i=0; i<ln; i++)
+	for(auto& ee : aa)
 	{
-		aa[i] = 0xFFFFFFFF;
+		ee = 0xFFFFFFFF;
 	}
 	
 	i=0;
@@ -36,24 +45,25 @@ int fooN(long n, int m)
 		while(k--)
 		{
 			i = (++i<n) ? i : 0;
-			while (((aa[i/NS])&(1<<(i%NS))) == 0)
+			while (!isAlive(aa, i))
 				i = (++i<n) ? i : 0;
 		}
 		
-		aa[i/NS] &= ~(1<<(i%NS));
+	//	aa[i/NS] &= ~(1<<(i%NS));
+		Kill(aa, i);
 		kills++;
 		if (v == 1)
 			std::cout << "No."<< i+1 << " killed, and total "<< kills << " mouses killed." <<std::endl;
 		if (kills == (n-1))
 			break;
 		i = (++i<n) ? i : 0;
-		while (((aa[i/NS])&(1<<(i%NS))) == 0)
+		while (!isAlive(aa, i))
 			i = (++i<n) ? i : 0;
 			
 	}
 	
 	i=0;
-	while(!((aa[i/NS])&(1<<(i%NS)))) i++;
+	while(!isAlive(aa,i)) i++;
 	return i+1;
 }
 
@@ -65,7 +75,7 @@ int fooNT(long n, int m)
 	if (n < 1 ||  m<1)
 		return 0;
 	if (m== 1)
-		return n-1;
+		return n;
 	if (n== 1)
 		return 1;
 	int k = 0;
@@ -77,9 +87,10 @@ int fooNT(long n, int m)
 	lm>0 ? ln++ : 0 ;
 	
 	std::vector<T> aa(ln);
-	for(i=0; i<ln; i++)
+	unsigned long kk = pow(2, ns)-1;
+	for(auto& ee: aa)
 	{
-		aa[i] = pow(2, ns)-1;
+		ee = kk;
 	}
 	i=0;
 	while(1)
@@ -88,23 +99,23 @@ int fooNT(long n, int m)
 		while(k--)
 		{
 			i = (++i<n) ? i : 0;
-			while((aa[i/ns]&(1<<(i%ns))) == 0)
+			while(!isAlive(aa, i))
 				i = (++i<n) ? i : 0;
 		}
 		
-		aa[i/ns] &= ~(1<<(i%ns));
+		Kill(aa, i);
 		kills++;
 		//std::cout << "No."<< i << " killed, and total "<< kills << " mouses killed." <<std::endl;
 		if (kills == (n-1))
 			break;
 		i = (++i<n) ? i : 0;
-		while ((aa[i/ns]&(1<<(i%ns)))== 0)
+		while (!isAlive(aa, i))
 			i = (++i<n) ? i : 0;
 			
 	}
 	
 	i=0;
-	while(!(aa[i/ns]&(1<<(i%ns)))) i++;
+	while(!isAlive(aa, i)) i++;
 	return i+1;
 }
 
@@ -123,14 +134,20 @@ int main(int argc, char* argv[])
 		m=n=0;
 		std::cout << "Input the number of mouses: " ;
 		std::cin >> n;
-		std::cout << "Input the kill mouse: " ;
+		std::cout << "Input the number of mouse will be killed: " ;
 		std::cin >> m;
 		//if (isnumber(m))
 		//	continue;
 		if (m<=0)
 			break;
+//		if (m > n)
+//		{
+//			std::cout<< "the number will be killed must not bigger than the total number of mouses"<<std::endl;
+//			continue;
+//		}
 		std::cout << n << ":" << m << std::endl;
-		std::cout << "the lucky mouse is No." << fooN (n, m) << std::endl<< std::endl;
+		int luky = fooN(n,m);
+		std::cout << "the lucky mouse is No." << luky << std::endl<< std::endl;
 		std::vector<int> vi(n);
 /*		int luck = 0;
 		while (m < n)
