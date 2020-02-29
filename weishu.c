@@ -6,9 +6,16 @@ int weishu(int aa)
 {
 	int ws = 0;
 	
+	// 0 must be 1.
+	if (aa == 0)
+		return 1;
+	
 	// minus number has - , so add 1.
 	if (aa < 0)
-		return weishu(-aa) + 1;
+	{
+		aa = -aa;
+		ws++;
+	}
 	
 	do
 	{
