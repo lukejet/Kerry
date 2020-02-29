@@ -1,4 +1,3 @@
-
 #include <string>
 #include <iostream>
 #include <vector>
@@ -16,6 +15,10 @@ inline void Kill(std::vector<unsigned int>& a, long n)
 {
 	a[n/NS] &= ~(1<<(n%NS));
 }
+inline void Increase(long& i, long max)
+{
+    i = (++i < max) ? i : 0;
+}
 
 int fooN(long n, int m)
 {
@@ -28,9 +31,8 @@ int fooN(long n, int m)
 	if (n== 1)
 		return 1;
 	int k = 0;
-	int lm = n%NS;
-	int ln = n/NS;
-	lm>0 ? ln++ : 0 ;
+	int ln = n/NS + n%NS?0:1;
+	
 	std::vector<unsigned int> aa(ln);  // sizeof int == 4
 	long i=0, kills=0;
 	for(auto& ee : aa)
@@ -44,9 +46,9 @@ int fooN(long n, int m)
 		k = m-1;
 		while(k--)
 		{
-			i = (++i<n) ? i : 0;
+			Increase(i, n);
 			while (!isAlive(aa, i))
-				i = (++i<n) ? i : 0;
+				Increase(i, n);
 		}
 		
 	//	aa[i/NS] &= ~(1<<(i%NS));
@@ -56,14 +58,15 @@ int fooN(long n, int m)
 			std::cout << "No."<< i+1 << " killed, and total "<< kills << " mouses killed." <<std::endl;
 		if (kills == (n-1))
 			break;
-		i = (++i<n) ? i : 0;
+		Increase(i, n);
 		while (!isAlive(aa, i))
-			i = (++i<n) ? i : 0;
+			Increase(i,n);
 			
 	}
 	
 	i=0;
-	while(!isAlive(aa,i)) i++;
+	while(!isAlive(aa,i))
+	    i++;
 	return i+1;
 }
 
