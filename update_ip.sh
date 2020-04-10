@@ -1,6 +1,11 @@
 #!/bin/sh
 
 TIME=`date`
+IPFILE=$1
+
+if [ -z "$IPFILE" ]; then
+	IPFILE=ips.txt
+fi
 
 cd ~/Kerry/
 git pull
@@ -14,6 +19,6 @@ if [ -z "$IP"  ]; then
 fi
 
 #echo "return $IP "
-mv tmp.txt ips.txt
-git commit ips.txt  --message="update ip to $IP $TIME"
+mv tmp.txt $IPFILE
+git commit $IPFILE --message="update ip to $IP $TIME"
 git push origin master
