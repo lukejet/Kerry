@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int weishu(int aa)
+int weishu(int aa, int jz=10)
 {
 	int ws = 0;
 	
@@ -14,15 +14,15 @@ int weishu(int aa)
 	if (aa < 0)
 	{
 		aa = -aa;
-		ws++;
+		++ws;
 	}
 	
 	do
 	{
 		if (!aa)
 			break;
-		aa /= 10;
-		ws++;
+		aa /= jz;
+		++ws;
 	} while(1);
 	return ws;
 }
@@ -36,9 +36,9 @@ int main(int argc, char* argv[])
 	if (argc != 3)
 		return -1;
 
-	clen = atoi(argv[1]);
-	count = atoi(argv[2]);
-	ret = (weishu(clen) == weishu(count));
+	var1 = atoi(argv[1]);
+	var2 = atoi(argv[2]);
+	ret = (weishu(var1) == weishu(var2));
 	
 	printf("the two number has the %s weishu \n", (ret) ? "same" : "different");
 	return 0;
